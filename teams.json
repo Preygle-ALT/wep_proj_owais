@@ -1,0 +1,14 @@
+{
+    "assignments": [
+        {
+            "subject": "Mathematics",
+            "due_date": "2025-03-30T23:59:59",
+            "content": "Solve 10 questions from chapter 5."
+        },
+        {
+            "subject": "Physics",
+            "due_date": "2025-04-01T23:59:59",
+            "content": "Write a report on Newton's Laws of Motion."
+        }
+    ]
+}

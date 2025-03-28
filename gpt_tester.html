@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Local Chatbot</title>
+</head>
+
+<body>
+    <h1>Chat with DialoGPT</h1>
+    <input type="text" id="message" placeholder="Type your message">
+    <button onclick="sendMessage()">Send</button>
+    <p id="response"></p>
+
+    <script>
+        async function sendMessage() {
+            let message = document.getElementById('message').value;
+            let response = await fetch("http://127.0.0.1:8080/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            });
+            let data = await response.json();
+            document.getElementById('response').innerText = "Bot: " + data.response;
+        }
+    </script>
+</body>
+
+</html>

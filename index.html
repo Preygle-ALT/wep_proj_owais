@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <style>
+        /* Basic styling for the chat popup */
+        #chatPopup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            display: none;
+        }
+
+        #chatLog {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        #userInput {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #sendBtn {
+            padding: 10px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #sendBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin: 5px 0;
+        }
+
+        .user {
+            text-align: right;
+            color: blue;
+        }
+
+        .bot {
+            text-align: left;
+            color: green;
+        }
+
+        #chatButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #007bff;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        #chatButton img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        #closeBtn {
+            align-self: flex-end;
+            cursor: pointer;
+            color: red;
+        }
+
+        .bot-logo {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .bot-message {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chatButton">
+        <img src="C:\Users\moham\Documents\PROGRAMMING\web_dev_project\image\logo.svg"alt="Chat Logo">
+    </div>
+
+    <div id="chatPopup">
+        <div id="closeBtn">&times;</div>
+        <div id="chatLog"></div>
+        <input type="text" id="userInput" placeholder="Type your message...">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script>
+        const chatPopup = document.getElementById('chatPopup');
+        const chatButton = document.getElementById('chatButton');
+        const closeBtn = document.getElementById('closeBtn');
+
+        chatButton.addEventListener('click', () => {
+            chatPopup.style.display = 'flex';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            chatPopup.style.display = 'none';
+        });
+
+        function appendMessage(sender, message) {
+            const chatLog = document.getElementById('chatLog');
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}`;
+
+            if (sender === 'bot') {
+                messageElement.innerHTML = `
+                    <div class="bot-message">
+                        <img src="C:/Users/moham/Documents/PROGRAMMING/web_dev_project/image/logo.svg" alt="Bot Logo" class="bot-logo">
+                        <span>${message}</span>
+                    </div>
+                `;
+            } else {
+                messageElement.textContent = message;
+            }
+
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput').value;
+            if (!userInput) return;
+
+            appendMessage('user', userInput);
+
+            try {
+                const response = await fetch('http://127.0.0.1:8080/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userInput }),
+                });
+
+                const data = await response.json();
+                appendMessage('bot', data.response);
+            } catch (error) {
+                appendMessage('bot', 'Error: Unable to connect to the server.');
+            }
+
+            document.getElementById('userInput').value = '';
+        }
+
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+
+        document.getElementById('userInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>

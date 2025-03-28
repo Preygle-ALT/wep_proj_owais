@@ -1,0 +1,14 @@
+{
+    "assignments": [
+        {
+            "subject": "Biology",
+            "due_date": "2025-03-27T23:59:59",
+            "content": "Describe the process of photosynthesis."
+        },
+        {
+            "subject": "Chemistry",
+            "due_date": "2025-03-31T23:59:59",
+            "content": "Prepare notes on chemical bonding."
+        }
+    ]
+}
