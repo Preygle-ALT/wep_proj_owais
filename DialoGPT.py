@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer #from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 import torch
 
 # Initialize Flask app
@@ -11,6 +11,12 @@ CORS(app)  # Enable CORS for all routes
 model_name = "microsoft/DialoGPT-small"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
+
+#bart down ni kia bt i thnk bart btr rhega apne system mei install kr lena
+
+# model_name = "facebook/bart-large"
+# tokenizer = AutoTokenizer.from_pretrained(model_name)
+# model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
 # Create a chat history to maintain context
 chat_history_ids = None
